@@ -77,6 +77,12 @@ public class License {
 	public void setLicenseType(String licenseType) {
 		this.licenseType = licenseType;
 	}
+	
+	@Override
+	public String toString() {
+		return "License [id=" + id + ", licenseId=" + licenseId + ", description=" + description + ", organizationId="
+				+ organizationId + ", productName=" + productName + ", licenseType=" + licenseType + "]";
+	}
 	 
 	 
 	 

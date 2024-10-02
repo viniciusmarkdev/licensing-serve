@@ -3,6 +3,7 @@ package com.optimagrowth.licensingservice.service;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.optimagrowth.licensingservice.model.License;
 
@@ -36,6 +37,7 @@ public class LicenseService {
 	}
 
 	public String updateLicense(License license, String organizationId) {
+
 		String responseMessage = null;
 		if (license != null) {
 
@@ -50,9 +52,7 @@ public class LicenseService {
 	public String deleteLicense(String licenseId, String organizationId){
 		 String responseMessage = null;
 		 responseMessage = String.format("Deleting license with id %s for the organization %s",licenseId, organizationId);
-		 
 		 return responseMessage;
-		 
 		 }
 
 }
