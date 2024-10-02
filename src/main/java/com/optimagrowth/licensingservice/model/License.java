@@ -1,5 +1,7 @@
 package com.optimagrowth.licensingservice.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,7 +18,13 @@ import lombok.ToString;
 /*
  * Um Objeto Java Comum (POJO) que contém as informações da licença.
  */
-public class License {
+
+
+/*
+ * 
+ * RepresentationModel<License> nos dá a capacidade de adicionar links à classe de modelo License
+ */
+public class License  extends RepresentationModel<License> {
 	
 	 private int id;
 	 private String licenseId;

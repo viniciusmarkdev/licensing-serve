@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.optimagrowth.licensingservice.model.License;
 import com.optimagrowth.licensingservice.service.LicenseService;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 /*
  * informa ao Spring Boot que este é um serviço baseado em REST e que ele irá automaticamente serializar/deserializar 
  * as requisições/respostas do serviço via JSON.
@@ -37,11 +40,44 @@ public class LicenseController {
 		this.licenseService = licenseService;
 	}
 
+	
+	/*
+	 * 
+	 * HATEOAS significa Hipermídia como o Motor do Estado da Aplicação
+	 * 
+	 * 
+	 * 
+	 * .O princípio HATEOAS afirma que uma API deve fornecer um guia ao cliente, 
+	 * retornando informações sobre os possíveis próximos passos com cada resposta do serviço.
+	 *  Este projeto não é uma funcionalidade central ou obrigatória, 
+	 * mas se você deseja ter um guia completo para todos os serviços da API de um determinado recurso, é uma excelente opção
+	 */
+	
+	
 	@GetMapping("/{licenseId}")
 	public ResponseEntity<License> getLicense(@PathVariable("organizationId") String organizationId,
 			@PathVariable("licenseId") String licenseId) {
 
 		License license = licenseService.getLicense(licenseId, organizationId);
+
+		/*
+		 * O método add() é um método do RepresentationModel.
+		 * 
+		 * 
+		 * O método linkTo inspeciona a classe do controlador License e obtém o mapeamento raiz, 
+		 * enquanto o método methodOn obtém o mapeamento do método fazendo uma invocação fictícia do método de destino.
+		 * 
+		 * 
+		 */
+		license.add(
+				linkTo(methodOn(LicenseController.class).getLicense(organizationId, license.getLicenseId()))
+						.withSelfRel(),
+				linkTo(methodOn(LicenseController.class).createLicense(organizationId, license, null))
+						.withRel("createLicense"),
+				linkTo(methodOn(LicenseController.class).updateLicense(organizationId, license))
+						.withRel("updateLicense"),
+				linkTo(methodOn(LicenseController.class).deleteLicense(organizationId, license.getLicenseId()))
+						.withRel("deleteLicense"));	
 		return ResponseEntity.ok(license);
 
 	}
@@ -54,10 +90,10 @@ public class LicenseController {
 
 	@PostMapping
 	public ResponseEntity<String> createLicense(@PathVariable("organizationId") String organizationId,
-			
-			@RequestBody License request , @RequestHeader(value="Accept-Language" , required = false) Locale locale) {
-		
-		    return ResponseEntity.ok(licenseService.createLicense(request, organizationId , locale));
+
+			@RequestBody License request, @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
+
+		return ResponseEntity.ok(licenseService.createLicense(request, organizationId, locale));
 	}
 
 	@DeleteMapping(value = "/{licenseId}")
