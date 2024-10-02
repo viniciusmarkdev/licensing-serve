@@ -1,15 +1,32 @@
 package com.optimagrowth.licensingservice.service;
 
+import java.util.Locale;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.optimagrowth.licensingservice.model.License;
 
 @Service
 public class LicenseService {
+	
+	/*
+	 * 
+	 * MessageSource: Esta é uma interface no Spring que fornece suporte para resolução de mensagens, 
+	 * incluindo internacionalização (i18n). Ele é usado para recuperar mensagens de propriedades em diferentes 
+	 * idiomas com base na localização (Locale).
 
+      messages: Esta é a variável que armazenará a instância de MessageSource injetada pelo Spring. 
+      Assim, você pode usar messages para acessar as mensagens definidas em arquivos de propriedades 
+     (como messages.properties, messages_en.properties, etc.) em seu código.
+	 */
+	
+	@Autowired
+	MessageSource messages;
+
+	
 	public License getLicense(String licenseId, String organizationId) {
 
 		License license = new License();
@@ -22,14 +39,30 @@ public class LicenseService {
 		license.setLicenseType("full");
 		return license;
 	}
+	
+	/*
+	 * 
+	 * Recebe o Locale como um parâmetro do método.
+	 */
 
-	public String createLicense(License license, String organizationId) {
+	public String createLicense(License license, String organizationId , Locale locale) {
 
 		String responseMessage = null;
 
 		if (license != null) {
+			
+			
+			/*
+			 * Quando uma mensagem não é encontrada, essa opção retorna o código da mensagem 'license.creates.message' em vez de um erro como este:
+               "Nenhuma mensagem encontrada sob o código 'license.creates.message' para o local 'es'."
+			 */
+			responseMessage = String.format(messages.getMessage(
+					
+					 "license.create.message", null,locale),
+					
+					 license.toString());
 
-			responseMessage = String.format("This is the post and the object is: %s", license.toString());
+	
 
 		}
 
@@ -42,7 +75,10 @@ public class LicenseService {
 		if (license != null) {
 
 			license.setOrganizationId(organizationId);
-			responseMessage = String.format("This is the put and the object is: %s", license.toString());
+			
+			responseMessage = String.format(messages.getMessage(
+					 "license.update.message", null, null),
+					 license.toString());
 
 		}
 		return responseMessage;
