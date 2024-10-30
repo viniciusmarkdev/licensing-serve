@@ -1,4 +1,4 @@
-package com.optimagrowth.licensingservice.service;
+package com.optimagrowth.license.service;
 
 import java.util.Locale;
 import java.util.Random;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.optimagrowth.licensingservice.model.License;
+import com.optimagrowth.license.model.License;
 
 @Service
 public class LicenseService {

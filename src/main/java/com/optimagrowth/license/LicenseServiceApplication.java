@@ -1,4 +1,4 @@
-package com.optimagrowth.licensingservice;
+package com.optimagrowth.license;
 
 import java.util.Locale;
 
@@ -29,17 +29,17 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  * 
  */
 
-@SpringBootApplication
-public class LicensingServiceApplication {
+@SpringBootApplication	
+public class LicenseServiceApplication {
 
 	public static void main(String[] args) {
 
 		/*
-		 * . A chamada SpringApplication.run(LicenseServiceApplication.class, args) no
+		 * A chamada SpringApplication.run(LicenseServiceApplication.class, args) no
 		 * método main() inicia o contêiner Spring e retorna um objeto
 		 * ApplicationContext do Spring
 		 */
-		SpringApplication.run(LicensingServiceApplication.class, args);
+		SpringApplication.run(LicenseServiceApplication.class, args);
 	}
 
 	/*

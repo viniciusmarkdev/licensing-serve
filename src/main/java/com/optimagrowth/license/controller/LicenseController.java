@@ -1,4 +1,4 @@
-package com.optimagrowth.licensingservice.controller;
+package com.optimagrowth.license.controller;
 
 import java.util.Locale;
 
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.optimagrowth.licensingservice.model.License;
-import com.optimagrowth.licensingservice.service.LicenseService;
+import com.optimagrowth.license.model.License;
+import com.optimagrowth.license.service.LicenseService;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

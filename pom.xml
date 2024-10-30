@@ -29,28 +29,26 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<docker.image.prefix>ostock</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.34</version> <!-- Verifique a versão mais recente -->
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -63,14 +61,54 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
+
+
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
+
+				<configuration>
+					<layers>
+					<enabled>true</enabled>
+					</layers>
+					<image>
+						<name>
+							${docker.image.prefix}/${project.artifactId}:latest</name>
+					</image>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository> <!--
+					Prefixo do repositório -->
+					<tag>${project.version}</tag> <!-- Tag da imagem -->
+					<buildArgs>
+						<JAR_FILE>licensing-service-0.0.1-SNAPSHOT.jar</JAR_FILE> <!--
+						Corrigido para usar o caminho completo -->
+					</buildArgs>
+					<dockerfile>target/Dockerfile</dockerfile> <!-- Localização
+					do Dockerfile -->
+					<contextDirectory>${project.build.directory}</contextDirectory> <!--
+					Contexto da construção -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
-
 </project>
